@@ -1,0 +1,39 @@
+services:
+  # Backend Service
+  - type: web
+    name: price-pulse-backend
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    plan: free
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: price-pulse-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        value: pricepulse
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: price-pulse-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PRICEPULSE_SCHEDULER_INTERVAL_MS
+        value: 1800000
+      - key: SPRING_MAIL_HOST
+        value: smtp.gmail.com
+      - key: SPRING_MAIL_PORT
+        value: 587
+      - key: SPRING_MAIL_USERNAME
+        sync: false
+      - key: SPRING_MAIL_PASSWORD
+        sync: false
+
+databases:
+  # PostgreSQL Database
+  - name: price-pulse-db
+    databaseName: pricepulse
+    user: pricepulse
+    plan: free
