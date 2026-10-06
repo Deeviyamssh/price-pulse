@@ -25,11 +25,11 @@ import java.time.Instant;
 /**
  * Handles registration, login, and logout.
  *
- * <p>The JWT is placed in an {@code HttpOnly; Secure; SameSite=Strict} cookie so that
- * JavaScript cannot read it (XSS protection) and it is not sent to cross-origin requests
- * (CSRF protection via SameSite). The response body on login carries only non-sensitive
- * user metadata (userId, email) so the frontend can display the user's identity without
- * needing to decode the token.
+ * <p>The JWT is placed in an {@code HttpOnly; Secure; SameSite=None} cookie for cross-origin
+ * deployments so that JavaScript cannot read it (XSS protection) and it is sent to
+ * cross-origin requests with credentials (CSRF protection via SameSite). The response body
+ * on login carries only non-sensitive user metadata (userId, email) so the frontend can
+ * display the user's identity without needing to decode the token.
  *
  * <p>Endpoints:
  * <ul>
@@ -147,10 +147,17 @@ public class AuthController {
      * @param maxAge  lifetime in seconds (0 to expire immediately)
      */
     private ResponseCookie buildJwtCookie(String value, long maxAge) {
+        // For cross-origin deployments (separate frontend/backend domains), use None
+        // For same-origin deployments, use Strict for better security
+        String sameSite = "Strict";
+        if (authCookieProperties.isCookieSecure()) {
+            sameSite = "None"; // Required for cross-origin with secure cookies
+        }
+        
         return ResponseCookie.from(JWT_COOKIE_NAME, value)
                 .httpOnly(true)
                 .secure(authCookieProperties.isCookieSecure())
-                .sameSite("Strict")
+                .sameSite(sameSite)
                 .path("/api")
                 .maxAge(maxAge)
                 .build();

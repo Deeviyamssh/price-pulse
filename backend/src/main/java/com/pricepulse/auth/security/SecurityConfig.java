@@ -25,8 +25,8 @@ import java.util.Map;
  * Central Spring Security configuration.
  *
  * <ul>
- *   <li>CSRF disabled — the JWT is stored in a {@code SameSite=Strict} HttpOnly cookie,
- *       which already prevents cross-site request forgery without a CSRF token.</li>
+ *   <li>CSRF disabled — the JWT is stored in a {@code SameSite=None} HttpOnly cookie
+ *       for cross-origin deployments, which already prevents cross-site request forgery.</li>
  *   <li>Sessions are STATELESS — all authentication state lives in the JWT.</li>
  *   <li>{@code /api/auth/**} and {@code /actuator/health} are public; everything else
  *       requires a valid JWT.</li>
@@ -48,7 +48,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // CSRF not needed: SameSite=Strict cookie blocks cross-origin requests
+                // CSRF not needed: SameSite=None with Secure cookie blocks cross-origin requests
                 .csrf(AbstractHttpConfigurer::disable)
 
                 // CORS must be configured before authentication so pre-flight OPTIONS
