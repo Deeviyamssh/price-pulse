@@ -1,8 +1,10 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: jdbc:postgresql://${DB_HOST:dpg-db28p8uk1f9s739iapng-a}:5432/${DB_NAME:pricepulse_305q}
+    username: ${DB_USER:pricepulse}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
   mail:
     host: ${SPRING_MAIL_HOST}
     port: ${SPRING_MAIL_PORT}
