@@ -18,6 +18,11 @@ spring:
             enable: true
             required: true
 
+management:
+  health:
+    mail:
+      enabled: false
+
 pricepulse:
   auth:
     cookie-secure: true
