@@ -1,0 +1,54 @@
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Devin and local tool configs
+.devin/
+.kiro/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+dist/
+build/
+target/
+*.jar
+*.war
+
+# Dependency directories
+node_modules/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Project-specific
+cookies.txt
+backend/.jqwik-database

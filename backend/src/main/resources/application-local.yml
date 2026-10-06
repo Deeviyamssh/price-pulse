@@ -1,0 +1,3 @@
+pricepulse:
+  auth:
+    cookie-secure: false
