@@ -316,10 +316,4 @@ docker push your-registry/price-pulse-frontend:latest
 - Verify nginx configuration in `frontend/nginx.conf`
 - Check browser console for errors
 
-## License
 
-[Add your license here]
-
-## Contributing
-
-[Add contribution guidelines here]
