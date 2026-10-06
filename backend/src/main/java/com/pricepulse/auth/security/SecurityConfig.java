@@ -30,7 +30,8 @@ import java.util.Map;
  *   <li>Sessions are STATELESS — all authentication state lives in the JWT.</li>
  *   <li>{@code /api/auth/**} and {@code /actuator/health} are public; everything else
  *       requires a valid JWT.</li>
- *   <li>CORS allows the React dev server at {@code http://localhost:3000} with
+ *   <li>CORS allows the React dev server at {@code http://localhost:3000} and
+ *       production frontend at {@code https://price-pulse-frontend.onrender.com} with
  *       credentials so the browser sends the HttpOnly cookie on cross-origin requests.</li>
  * </ul>
  */
@@ -105,16 +106,19 @@ public class SecurityConfig {
     // ── CORS ────────────────────────────────────────────────────────────────
 
     /**
-     * Allow the React dev server to call the API with credentials (the HttpOnly cookie).
+     * Allow the React dev server and production frontend to call the API with credentials (the HttpOnly cookie).
      *
-     * <p>In production, replace {@code http://localhost:3000} with the real domain.</p>
+     * <p>In production, includes the Render frontend URL.</p>
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // Allowed origin — must be explicit (not "*") when credentials are enabled
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        // Allowed origins — must be explicit (not "*") when credentials are enabled
+        config.setAllowedOrigins(List.of(
+            "http://localhost:3000",
+            "https://price-pulse-frontend.onrender.com"
+        ));
 
         // All methods used by the API
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
