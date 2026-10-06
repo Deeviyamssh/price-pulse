@@ -3,7 +3,7 @@ services:
   - type: web
     name: price-pulse-backend
     env: docker
-    dockerfilePath: ./backend/Dockerfile
+    dockerfilePath: ./Dockerfile
     plan: free
     envVars:
       - key: SPRING_PROFILES_ACTIVE
