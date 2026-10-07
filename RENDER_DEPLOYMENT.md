@@ -63,16 +63,15 @@ git push origin main
    - Plan: Free
 5. Add Environment Variables:
    - `SPRING_PROFILES_ACTIVE`: `render`
-   - `DB_HOST`: `[From database Internal Database URL, without protocol]`
-   - `DB_NAME`: `pricepulse_305q` (or your database name)
-   - `DB_USER`: `pricepulse`
-   - `DB_PASSWORD`: `[From database]`
+   - `SPRING_DATASOURCE_URL`: `[From database connection string]`
+   - `SPRING_DATASOURCE_USERNAME`: `pricepulse`
+   - `SPRING_DATASOURCE_PASSWORD`: `[From database]`
    - `JWT_SECRET`: `[Generate a random 32+ character string]`
    - `PRICEPULSE_SCHEDULER_INTERVAL_MS`: `1800000`
-   - `SPRING_MAIL_HOST`: `smtp.sendgrid.net` (for SendGrid) or `smtp.gmail.com` (for Gmail)
+   - `SPRING_MAIL_HOST`: `smtp.gmail.com` (or your SMTP)
    - `SPRING_MAIL_PORT`: `587`
-   - `SPRING_MAIL_USERNAME`: `apikey` (for SendGrid) or `[Your email]` (for Gmail)
-   - `SPRING_MAIL_PASSWORD`: `[Your SendGrid API key]` or `[Your app password]`
+   - `SPRING_MAIL_USERNAME`: `[Your email]`
+   - `SPRING_MAIL_PASSWORD`: `[Your app password]`
 6. Click **Create Web Service**
 
 Render will build and deploy your backend. Once complete, you'll get a URL like:
@@ -108,25 +107,9 @@ Vercel will build and deploy your frontend. You'll get a URL like:
 
 ## Step 3: Configure Email (Production)
 
-Email notifications are **enabled by default**. You need to configure SMTP credentials to send price alert emails.
+For production email, you'll need to set up SMTP:
 
-### Recommended: SendGrid (Free tier)
-
-SendGrid works best on cloud platforms like Render and has a free tier (100 emails/day).
-
-1. Sign up at [sendgrid.com](https://sendgrid.com)
-2. Go to **Settings** > **API Keys**
-3. Create an API key with "Mail Send" permissions
-4. Copy the API key (starts with `SG.`)
-5. In Render, add these environment variables to your backend service:
-   - `SPRING_MAIL_HOST`: `smtp.sendgrid.net`
-   - `SPRING_MAIL_PORT`: `587`
-   - `SPRING_MAIL_USERNAME`: `apikey`
-   - `SPRING_MAIL_PASSWORD`: `[Your SendGrid API key]`
-
-### Alternative: Gmail (Free)
-
-**Note**: Gmail SMTP may have issues on Render's free tier due to port restrictions.
+### Option 1: Gmail (Free)
 
 1. Enable 2FA on your Google account
 2. Generate an App Password:
@@ -138,6 +121,12 @@ SendGrid works best on cloud platforms like Render and has a free tier (100 emai
    - `SPRING_MAIL_PORT`: `587`
    - `SPRING_MAIL_USERNAME`: `[Your Gmail address]`
    - `SPRING_MAIL_PASSWORD`: `[Your App Password]`
+
+### Option 2: SendGrid (Free tier available)
+
+1. Sign up at [sendgrid.com](https://sendgrid.com)
+2. Create an API key
+3. Use SendGrid SMTP credentials in Render
 
 ---
 
