@@ -153,6 +153,8 @@ The easiest way to run PricePulse is using Docker Compose:
 | `SPRING_MAIL_USERNAME` | SMTP username | Empty string |
 | `SPRING_MAIL_PASSWORD` | SMTP password | Empty string |
 
+**Note**: Email notifications are enabled by default. For production, configure a real SMTP service (e.g., SendGrid) to send price alert emails. See [RENDER_DEPLOYMENT.md](RENDER_DEPLOYMENT.md) for details.
+
 ## Docker Configuration
 
 ### Development (docker-compose.yml)
