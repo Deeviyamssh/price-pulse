@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import { formatPrice, formatDate } from '../utils/formatters';
 
 interface ProductCardProps {
@@ -37,6 +37,11 @@ export function ProductCard({
   actionMessage,
 }: ProductCardProps) {
   const [alertTarget, setAlertTarget] = useState(product.targetPrice?.toFixed(2) ?? '');
+
+  // Sync input with prop changes (e.g., after optimistic update from parent)
+  useEffect(() => {
+    setAlertTarget(product.targetPrice?.toFixed(2) ?? '');
+  }, [product.targetPrice]);
 
   const handleAlertSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

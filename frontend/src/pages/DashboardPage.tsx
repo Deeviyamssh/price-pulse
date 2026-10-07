@@ -87,14 +87,17 @@ export function DashboardPage() {
     try {
       let alert;
       if (action === 'save') {
-        // Use the provided targetPrice or fall back to product's current targetPrice
-        const priceToUse = targetPrice !== undefined ? targetPrice : (product.targetPrice ?? 0);
-        alert = await setAlert(product.id, priceToUse);
+        // Use the provided targetPrice (which is the user's input)
+        // If targetPrice is not provided, don't call setAlert at all
+        if (targetPrice === undefined || targetPrice === null) {
+          throw new Error('Target price is required');
+        }
+        alert = await setAlert(product.id, targetPrice);
       } else {
         alert = await removeAlert(product.id);
       }
 
-      // Optimistically update the product in the cache
+      // Optimistically update the product in the cache with the returned alert data
       queryClient.setQueryData<Product[]>(['products'], (old = []) =>
         old.map((item) =>
           item.id === product.id
