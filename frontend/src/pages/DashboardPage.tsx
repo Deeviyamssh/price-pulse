@@ -75,14 +75,14 @@ export function DashboardPage() {
     }
   }
 
-  async function handleAlertAction(product: Product, action: 'save' | 'remove', targetPrice?: number) {
+  async function handleAlertAction(productId: number, action: 'save' | 'remove', targetPrice?: number) {
     // Prevent duplicate actions
-    const pendingAlertAction = pendingAlerts[product.id];
+    const pendingAlertAction = pendingAlerts[productId];
     if (pendingAlertAction) return;
 
     // Set pending state
-    setPendingAlerts((pending) => ({ ...pending, [product.id]: action }));
-    setActionMessages((messages) => ({ ...messages, [product.id]: '' }));
+    setPendingAlerts((pending) => ({ ...pending, [productId]: action }));
+    setActionMessages((messages) => ({ ...messages, [productId]: '' }));
 
     try {
       let alert;
@@ -92,15 +92,15 @@ export function DashboardPage() {
         if (targetPrice === undefined || targetPrice === null) {
           throw new Error('Target price is required');
         }
-        alert = await setAlert(product.id, targetPrice);
+        alert = await setAlert(productId, targetPrice);
       } else {
-        alert = await removeAlert(product.id);
+        alert = await removeAlert(productId);
       }
 
       // Optimistically update the product in the cache with the returned alert data
       queryClient.setQueryData<Product[]>(['products'], (old = []) =>
         old.map((item) =>
-          item.id === product.id
+          item.id === productId
             ? { ...item, targetPrice: alert.targetPrice, alertActive: alert.isActive }
             : item
         )
@@ -108,13 +108,13 @@ export function DashboardPage() {
     } catch (cause) {
       setActionMessages((messages) => ({
         ...messages,
-        [product.id]: cause instanceof Error ? cause.message : 'Unable to update the price alert.',
+        [productId]: cause instanceof Error ? cause.message : 'Unable to update the price alert.',
       }));
     } finally {
       // Clear pending state
       setPendingAlerts((pending) => {
         const next = { ...pending };
-        delete next[product.id];
+        delete next[productId];
         return next;
       });
     }
@@ -212,8 +212,8 @@ export function DashboardPage() {
                         pendingAction={pendingAction}
                         onPauseResume={() => handleProductAction(product, product.status === 'PAUSED' ? 'resume' : 'pause')}
                         onDelete={() => handleProductAction(product, 'delete')}
-                        onSetAlert={(targetPrice) => handleAlertAction(product, 'save', targetPrice)}
-                        onRemoveAlert={() => handleAlertAction(product, 'remove')}
+                        onSetAlert={(targetPrice) => handleAlertAction(product.id, 'save', targetPrice)}
+                        onRemoveAlert={() => handleAlertAction(product.id, 'remove')}
                         actionMessage={actionMessages[product.id]}
                       />
                     </li>

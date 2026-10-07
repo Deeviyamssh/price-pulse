@@ -21,8 +21,8 @@ interface ProductCardProps {
   pendingAction: 'pause' | 'resume' | 'delete' | 'save' | 'remove' | null;
   onPauseResume: (productId: number) => void;
   onDelete: (productId: number) => void;
-  onSetAlert: (productId: number, targetPrice: number) => void;
-  onRemoveAlert: (productId: number) => void;
+  onSetAlert: (targetPrice: number) => void;
+  onRemoveAlert: () => void;
   actionMessage?: string;
 }
 
@@ -47,7 +47,7 @@ export function ProductCard({
     e.preventDefault();
     const price = Number(alertTarget);
     if (price > 0) {
-      onSetAlert(product.id, price);
+      onSetAlert(price);
     }
   };
 
@@ -135,7 +135,7 @@ export function ProductCard({
                 <button
                   type="button"
                   disabled={isPending || pendingAction === 'remove'}
-                  onClick={() => onRemoveAlert(product.id)}
+                  onClick={() => onRemoveAlert()}
                   className="btn btn-outline w-full"
                 >
                   {isPending && pendingAction === 'remove' ? 'Removing…' : 'Remove alert'}
