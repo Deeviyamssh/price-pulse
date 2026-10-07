@@ -60,12 +60,14 @@ export function ProductDetailPage() {
     queryKey: ['product', productId],
     queryFn: () => getProduct(productId),
     enabled: !!productId && Number.isInteger(productId) && productId > 0,
+    refetchInterval: 60000, // Refetch every 60 seconds
   });
 
   const { data: records, isLoading: recordsLoading, error: recordsError } = useQuery({
     queryKey: ['priceHistory', productId],
     queryFn: () => getPriceHistory(productId),
     enabled: !!productId && Number.isInteger(productId) && productId > 0,
+    refetchInterval: 60000, // Refetch every 60 seconds
   });
 
   const isLoading = productLoading || recordsLoading;

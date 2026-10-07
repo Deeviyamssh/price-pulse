@@ -25,6 +25,7 @@ export function DashboardPage() {
   const { data: products = [], isLoading, error } = useQuery<Product[], Error>({
     queryKey: ['products'],
     queryFn: listProducts,
+    refetchInterval: 60000, // Refetch every 60 seconds
   });
 
   const [isAdding, setIsAdding] = useState(false);
