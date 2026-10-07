@@ -28,8 +28,8 @@ import java.util.Map;
  *   <li>CSRF disabled — the JWT is stored in a {@code SameSite=None} HttpOnly cookie
  *       for cross-origin deployments, which already prevents cross-site request forgery.</li>
  *   <li>Sessions are STATELESS — all authentication state lives in the JWT.</li>
- *   <li>{@code /api/auth/**} and {@code /actuator/health} are public; everything else
- *       requires a valid JWT.</li>
+ *   <li>{@code /api/auth/**}, {@code /actuator/health}, and {@code /api/admin/trigger-price-check}
+ *       are public; everything else requires a valid JWT.</li>
  *   <li>CORS allows the React dev server at {@code http://localhost:3000} and
  *       production frontend at {@code https://price-pulse-frontend.onrender.com} with
  *       credentials so the browser sends the HttpOnly cookie on cross-origin requests.</li>
@@ -67,7 +67,7 @@ public class SecurityConfig {
 
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/register", "/api/auth/login", "/actuator/health").permitAll()
+                        .requestMatchers("/api/auth/register", "/api/auth/login", "/actuator/health", "/api/admin/trigger-price-check").permitAll()
                         .requestMatchers("/api/auth/me", "/api/auth/logout").authenticated()
                         .anyRequest().authenticated()
                 )
